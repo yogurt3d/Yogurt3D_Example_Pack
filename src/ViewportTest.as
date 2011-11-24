@@ -1,47 +1,25 @@
 package
 {
 	import com.yogurt3d.Yogurt3D;
-	import com.yogurt3d.core.events.MouseEvent3D;
 	import com.yogurt3d.core.geoms.Mesh;
-	import com.yogurt3d.core.lights.ELightType;
 	import com.yogurt3d.core.lights.Light;
-	import com.yogurt3d.core.lights.RenderableLight;
-	import com.yogurt3d.core.managers.contextmanager.Context;
 	import com.yogurt3d.core.managers.tickmanager.TimeInfo;
-	import com.yogurt3d.core.materials.MaterialBitmap;
-	import com.yogurt3d.core.materials.MaterialDiffuseFill;
-	import com.yogurt3d.core.materials.MaterialDiffuseTexture;
-	import com.yogurt3d.core.materials.MaterialEnvMapping;
-	import com.yogurt3d.core.materials.MaterialFill;
-	import com.yogurt3d.core.materials.MaterialSpecularFill;
 	import com.yogurt3d.core.materials.MaterialTexture;
-	import com.yogurt3d.core.materials.MaterialTextureColorFresnel;
 	import com.yogurt3d.core.materials.MaterialTwoColorFresnel;
 	import com.yogurt3d.core.materials.base.Material;
 	import com.yogurt3d.core.objects.interfaces.ITickedObject;
 	import com.yogurt3d.core.sceneobjects.SceneObjectRenderable;
 	import com.yogurt3d.core.texture.TextureMap;
-	import com.yogurt3d.core.transformations.Transformation;
-	import com.yogurt3d.core.viewports.Viewport;
+	import com.yogurt3d.core.utils.MathUtils;
 	import com.yogurt3d.io.loaders.DisplayObjectLoader;
 	import com.yogurt3d.io.managers.loadmanagers.LoadManager;
 	import com.yogurt3d.io.managers.loadmanagers.LoaderEvent;
 	import com.yogurt3d.io.parsers.TextureMap_Parser;
 	import com.yogurt3d.presets.primitives.meshs.GeodesicSphereMesh;
-	import com.yogurt3d.presets.primitives.sceneobjects.BoxSceneObject;
-	import com.yogurt3d.presets.primitives.sceneobjects.PlaneSceneObject;
-	import com.yogurt3d.presets.renderers.molehill.MolehillRenderer;
-	import com.yogurt3d.presets.setup.BasicSetup;
 	import com.yogurt3d.presets.setup.TargetSetup;
 	import com.yogurt3d.test.BaseTest;
 	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.BlendMode;
-	import flash.events.Event;
 	import flash.geom.Vector3D;
-	
-	import net.hires.debug.Stats;
 	
 	import skybox.DuskSkyBox;
 
@@ -144,9 +122,9 @@ package
 			if( light )
 			{
 				light.transformation.position = new Vector3D(
-					80* Math.sin( (_timeInfo.objectTime / 1000) * 50 * Transformation.DEG_TO_RAD ),
+					80* Math.sin( (_timeInfo.objectTime / 1000) * 50 * MathUtils.DEG_TO_RAD ),
 					50*1,
-					65* Math.cos( (_timeInfo.objectTime / 1000) * 50 * Transformation.DEG_TO_RAD )
+					65* Math.cos( (_timeInfo.objectTime / 1000) * 50 * MathUtils.DEG_TO_RAD )
 				);
 				
 				//light.transformation.position = camera.transformation.position;

@@ -1,6 +1,5 @@
 package
 {
-	import com.yogurt3d.Yogurt3D;
 	import com.yogurt3d.core.events.MouseEvent3D;
 	import com.yogurt3d.core.geoms.Mesh;
 	import com.yogurt3d.core.lights.ELightType;
@@ -12,7 +11,7 @@ package
 	import com.yogurt3d.core.materials.MaterialSpecularTexture;
 	import com.yogurt3d.core.objects.interfaces.ITickedObject;
 	import com.yogurt3d.core.sceneobjects.SceneObjectRenderable;
-	import com.yogurt3d.core.transformations.Transformation;
+	import com.yogurt3d.core.utils.MathUtils;
 	import com.yogurt3d.io.loaders.DataLoader;
 	import com.yogurt3d.io.managers.loadmanagers.LoadManager;
 	import com.yogurt3d.io.managers.loadmanagers.LoaderEvent;
@@ -24,7 +23,6 @@ package
 	import com.yogurt3d.test.BaseTest;
 	
 	import flash.display.BitmapData;
-	import flash.events.Event;
 	import flash.geom.Vector3D;
 	import flash.net.URLLoaderDataFormat;
 	
@@ -58,7 +56,7 @@ package
 
 			this.addChild( new Stats() );
 			var loader:LoadManager = new LoadManager();
-			loader.add( PATH +  "house_normal.atf", DataLoader, TextureMap_Parser, {dataFormat: URLLoaderDataFormat.BINARY} );
+			loader.add( PATH + "house_normal.atf", DataLoader, TextureMap_Parser, {dataFormat: URLLoaderDataFormat.BINARY} );
 			loader.add( PATH + "house_diffuse.atf", DataLoader, TextureMap_Parser, {dataFormat: URLLoaderDataFormat.BINARY} );
 			loader.add( PATH + "house_spec.atf", DataLoader, TextureMap_Parser, {dataFormat: URLLoaderDataFormat.BINARY} );
 			loader.add( PATH + "House.y3d", DataLoader, Y3D_Parser, {dataFormat: URLLoaderDataFormat.BINARY} );
@@ -132,14 +130,15 @@ package
 			if( light )
 			{
 				light.transformation.position = new Vector3D(
-					800* Math.sin( (_timeInfo.objectTime / 1000) * 50 * Transformation.DEG_TO_RAD ),
+					800* Math.sin( (_timeInfo.objectTime / 1000) * 50 * MathUtils.DEG_TO_RAD ),
 					500*1,
-					650* Math.cos( (_timeInfo.objectTime / 1000) * 50 * Transformation.DEG_TO_RAD )
+					650* Math.cos( (_timeInfo.objectTime / 1000) * 50 * MathUtils.DEG_TO_RAD )
 				);
 				light2.transformation.position = light.transformation.position;
 				light2.transformation.x *= -1;
 				light2.transformation.z *= -1;
 			}
+			trace(_timeInfo.objectTime);
 		}
 	}
 }

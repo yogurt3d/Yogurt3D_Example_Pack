@@ -1,7 +1,6 @@
 package
 {
 	import com.yogurt3d.core.materials.MaterialTwoColorFresnel;
-	import com.yogurt3d.presets.cameras.TargetCamera;
 	import com.yogurt3d.presets.primitives.sceneobjects.TorusKnotSceneObject;
 	import com.yogurt3d.presets.setup.TargetSetup;
 	import com.yogurt3d.test.BaseTest;

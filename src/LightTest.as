@@ -7,17 +7,18 @@ package
 	import com.bit101.components.Style;
 	import com.bit101.components.VBox;
 	import com.bit101.components.Window;
-	import com.yogurt3d.Yogurt3D;
 	import com.yogurt3d.core.geoms.Mesh;
 	import com.yogurt3d.core.lights.ELightType;
+	import com.yogurt3d.core.lights.EShadowType;
 	import com.yogurt3d.core.lights.RenderableLight;
+	import com.yogurt3d.core.materials.MaterialDiffuseFill;
 	import com.yogurt3d.core.materials.MaterialSpecularFill;
 	import com.yogurt3d.core.sceneobjects.SceneObjectRenderable;
 	import com.yogurt3d.io.loaders.DataLoader;
 	import com.yogurt3d.io.managers.loadmanagers.LoadManager;
 	import com.yogurt3d.io.managers.loadmanagers.LoaderEvent;
 	import com.yogurt3d.io.parsers.Y3D_Parser;
-	import com.yogurt3d.presets.cameras.TargetCamera;
+	import com.yogurt3d.presets.primitives.sceneobjects.PlaneSceneObject;
 	import com.yogurt3d.presets.setup.TargetSetup;
 	import com.yogurt3d.test.BaseTest;
 	
@@ -72,21 +73,39 @@ package
 				material.specularColor.a = 0;
 				
 				sceneObject = new SceneObjectRenderable();
-				sceneObject.geometry = mesh;
+				sceneObject.geometry = mesh;//new TorusKnotMesh(1,0.4,32);
 				sceneObject.material = material;
+				sceneObject.castShadows = true;
 				setup.scene.addChild( sceneObject );
 				
-				light1 = new RenderableLight(ELightType.POINT, 0x00FF00);
+				light1 = new RenderableLight(ELightType.SPOT, 0x00FF00);
 				light1.transformation.position = new Vector3D(10,10,10);
+				light1.shadows = EShadowType.HARD;
+				light1.shadowColor.a = 0.4;
+				light1.transformation.lookAt( new Vector3D() );
+				
 				sceneObject.addChild( light1 );
 				
 				light2 = new RenderableLight(ELightType.POINT, 0xFF0000);
 				light2.transformation.position = new Vector3D(-10,10,10);
+				light2.transformation.lookAt( new Vector3D() );
+				light2.shadows = EShadowType.SOFT;
+				light2.shadowColor.a = 0.4;
 				sceneObject.addChild( light2 );
 				
-				light3 = new RenderableLight(ELightType.POINT, 0x0000FF);
+				light3 = new RenderableLight(ELightType.DIRECTIONAL, 0x0000FF);
 				light3.transformation.position = new Vector3D(-10,10,-10);
+				light3.transformation.lookAt( new Vector3D() );
+				light3.shadows = EShadowType.HARD;
+				light3.shadowColor.a = 0.4;
 				sceneObject.addChild( light3 );
+				
+				
+				var plane:PlaneSceneObject = new PlaneSceneObject(36,36,36,10,10);
+				plane.material = new MaterialDiffuseFill(0xFFFFFF);
+				plane.receiveShadows = true;
+				plane.transformation.y = -4;
+				sceneObject.addChild( plane );
 				
 				setup.camera.dist = 15;
 
