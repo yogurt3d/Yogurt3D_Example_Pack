@@ -52,8 +52,9 @@ package
 				
 				sceneObject = new PlaneSceneObject();
 				var texture:TextureMap = loader.getLoadedContent( PATH + "alpha.png" );
+				texture.transparent = true;
 				sceneObject.material = new MaterialTexture( texture );
-				MaterialTexture(sceneObject.material).alphaTexture = true;
+				
 				setup.scene.addChild( sceneObject );
 				
 				setup.camera.transformation.position = new Vector3D(0,2,0);
