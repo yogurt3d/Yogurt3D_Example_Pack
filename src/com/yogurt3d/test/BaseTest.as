@@ -23,11 +23,6 @@ package com.yogurt3d.test
 	
 	public class BaseTest extends Sprite
 	{
-		private var m_camera		:Camera;
-		private var m_scene		:Scene;
-		private var m_viewport	:Viewport;
-		protected var m_textField	:TextField;
-		private var m_context		:Context;
 		private var m_loader:LoaderGUI;
 		
 		private var m_timeInfo:TimeInfo;

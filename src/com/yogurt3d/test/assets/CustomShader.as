@@ -30,7 +30,7 @@ package com.yogurt3d.test.assets
 			params.blendEnabled 	= false;
 			params.culling			= Context3DTriangleFace.FRONT;
 			params.depthFunction 	= Context3DCompareMode.LESS_EQUAL;
-			requiresLight = false;
+			params.requiresLight = false;
 			
 			var _vertexShaderConsts:ShaderConstants 	= new ShaderConstants( 0, EShaderConstantsType.MVP_TRANSPOSED);			
 			params.vertexShaderConstants.push(_vertexShaderConsts);

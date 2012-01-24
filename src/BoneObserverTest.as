@@ -104,7 +104,7 @@ package
 				ogre.transformation.y = -.1;
 				container.userID = "ogre";
 				
-				ogre.geometry.axisAlignedBoundingBox.center;
+				ogre.geometry.axisAlignedBoundingBox.centerGlobal;
 				
 				mace = new SceneObjectRenderable();
 				mace.geometry = CompressedFile(loader.getLoadedContent(  PATH + "ogre.zip")).getContent("mace.y3d");

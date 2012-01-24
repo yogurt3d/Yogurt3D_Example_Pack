@@ -7,13 +7,19 @@ package
 	import com.bit101.components.Style;
 	import com.bit101.components.VBox;
 	import com.bit101.components.Window;
+	import com.yogurt3d.Yogurt3D;
 	import com.yogurt3d.core.geoms.Mesh;
 	import com.yogurt3d.core.lights.ELightType;
 	import com.yogurt3d.core.lights.EShadowType;
 	import com.yogurt3d.core.lights.RenderableLight;
+	import com.yogurt3d.core.managers.idmanager.IDManager;
 	import com.yogurt3d.core.materials.MaterialDiffuseFill;
 	import com.yogurt3d.core.materials.MaterialSpecularFill;
+	import com.yogurt3d.core.namespaces.YOGURT3D_INTERNAL;
 	import com.yogurt3d.core.sceneobjects.SceneObjectRenderable;
+	import com.yogurt3d.core.transformations.Transformation;
+	import com.yogurt3d.core.utils.MathUtils;
+	import com.yogurt3d.core.viewports.EAabbDrawMode;
 	import com.yogurt3d.io.loaders.DataLoader;
 	import com.yogurt3d.io.managers.loadmanagers.LoadManager;
 	import com.yogurt3d.io.managers.loadmanagers.LoaderEvent;
@@ -25,11 +31,12 @@ package
 	import flash.events.Event;
 	import flash.geom.Vector3D;
 	import flash.net.URLLoaderDataFormat;
+	import flash.utils.getTimer;
 	
 	[SWF(width="800", height="600", frameRate="60")]
 	public class LightTest extends BaseTest
 	{
-		public static const PATH:String = "http://www.yogurt3d.com/examples/resources/";//"http://www.yogurt3d.com/examples/resources/";//"../resources/runtimeResources/"; //
+		public static var PATH:String;
 		
 		protected var material:MaterialSpecularFill;
 		
@@ -44,6 +51,12 @@ package
 		public function LightTest()
 		{
 			super();
+			if( this.loaderInfo.loaderURL.indexOf("yogurt3d.com") != -1 )
+			{
+				PATH = "http://www.yogurt3d.com/examples/resources/";	
+			}else{
+				PATH = "../resources/runtimeResources/";
+			}
 			
 			setup = new TargetSetup(this);
 			
@@ -66,6 +79,7 @@ package
 			loader.addEventListener( LoaderEvent.ALL_COMPLETE, function( _E:LoaderEvent ):void
 			{
 				setup.scene.sceneColor.setColorUint( 0xFF333333 );
+				setup.scene.YOGURT3D_INTERNAL::m_rootObject.aabbWireframe = EAabbDrawMode.CUMULATIVE;
 				
 				var mesh:Mesh = loader.getLoadedContent( PATH + "Head.y3d" );
 				material = new MaterialSpecularFill(0x999999,1 );
@@ -76,28 +90,39 @@ package
 				sceneObject.geometry = mesh;//new TorusKnotMesh(1,0.4,32);
 				sceneObject.material = material;
 				sceneObject.castShadows = true;
+				//sceneObject.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
 				setup.scene.addChild( sceneObject );
 				
 				light1 = new RenderableLight(ELightType.SPOT, 0x00FF00);
 				light1.transformation.position = new Vector3D(10,10,10);
-				light1.shadows = EShadowType.HARD;
+				light1.shadows = EShadowType.SOFT;
 				light1.shadowColor.a = 0.4;
 				light1.transformation.lookAt( new Vector3D() );
-				
+				light1.transformation.userID = "spot";
+				//light1.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
+				//light1.sceneObject.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
 				sceneObject.addChild( light1 );
 				
 				light2 = new RenderableLight(ELightType.POINT, 0xFF0000);
 				light2.transformation.position = new Vector3D(-10,10,10);
 				light2.transformation.lookAt( new Vector3D() );
-				light2.shadows = EShadowType.SOFT;
+				light2.shadows = EShadowType.HARD;
 				light2.shadowColor.a = 0.4;
+				light2.range = 100;
+				light2.transformation.userID = "point";
+				//light2.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
+				//light2.sceneObject.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
 				sceneObject.addChild( light2 );
 				
 				light3 = new RenderableLight(ELightType.DIRECTIONAL, 0x0000FF);
 				light3.transformation.position = new Vector3D(-10,10,-10);
 				light3.transformation.lookAt( new Vector3D() );
-				light3.shadows = EShadowType.HARD;
-				light3.shadowColor.a = 0.4;
+				light3.shadows = EShadowType.SOFT;
+				light3.shadowColor.a = 0.8;
+				//light3.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
+				//light3.sceneObject.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
+				light3.transformation.userID = "dir";
+				//light3.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
 				sceneObject.addChild( light3 );
 				
 				
@@ -106,8 +131,16 @@ package
 				plane.receiveShadows = true;
 				plane.transformation.y = -4;
 				sceneObject.addChild( plane );
+				//plane.aabbWireframe = EAabbDrawMode.BOTH_CUM_AND_STR;
 				
 				setup.camera.dist = 15;
+				
+				Yogurt3D.instance.enginePreUpdateCallback = function():void{
+					( IDManager.getObjectByUserID("dir") as Transformation ).rotationX = Math.cos( getTimer() / 50 * MathUtils.DEG_TO_RAD ) * 30 - 37;
+					( IDManager.getObjectByUserID("point") as Transformation ).y = Math.cos( getTimer() / 50 * MathUtils.DEG_TO_RAD ) * 10 + 15;
+					( IDManager.getObjectByUserID("spot") as Transformation ).y = Math.cos( getTimer() / 50 * MathUtils.DEG_TO_RAD ) * 10 + 15;
+					( IDManager.getObjectByUserID("spot") as Transformation ).lookAt( new Vector3D() );
+				};
 
 				hideLoader();
 			});
